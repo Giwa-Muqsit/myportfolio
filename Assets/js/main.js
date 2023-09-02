@@ -321,7 +321,7 @@ function contactFormSetup() {
     //     // if( required === 0 ) {
     //     //     $.ajax({
     //     //         type: 'POST',
-    //     //         url: 'Assets/php/SendMail.php',
+    //     //         url: '',
     //     //         data: {
     //     //             cf_name: name,
     //     //             cf_email: email,
