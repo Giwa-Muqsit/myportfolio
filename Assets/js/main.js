@@ -296,52 +296,52 @@ function contactFormSetup() {
     });
 
 
-    $('#contact-form').on('submit', function(e) {
-        e.preventDefault();
-        var name = $('#cf-name').val(),
-            email = $('#cf-email').val(),
-            message = $('#cf-message').val(),
-            $messageBox = $('#contact-form .message'),
-            required = 0;
+    // $('#contact-form').on('submit', function(e) {
+    //     e.preventDefault();
+    //     var name = $('#cf-name').val(),
+    //         email = $('#cf-email').val(),
+    //         message = $('#cf-message').val(),
+    //         $messageBox = $('#contact-form .message'),
+    //         required = 0;
 
 
-        $('.cf-validate', this).each(function() {
-            if($(this).val() == '') {
-                $(this).addClass('cf-error');
-                required += 1;
-            } else {
-                if($(this).hasClass('cf-error')) {
-                    $(this).removeClass('cf-error');
-                    if(required > 0) {
-                        required -= 1;
-                    }
-                }
-            }
-        });
-        if( required === 0 ) {
-            $.ajax({
-                type: 'POST',
-                url: 'mail.php',
-                data: {
-                    cf_name: name,
-                    cf_email: email,
-                    cf_message: message
-                },
-                dataType: "json",
-                success: function(data) {
-                    console.log(data);
-                    showAlertBox(data.status, data.message);
+    //     $('.cf-validate', this).each(function() {
+    //         if($(this).val() == '') {
+    //             $(this).addClass('cf-error');
+    //             required += 1;
+    //         } else {
+    //             if($(this).hasClass('cf-error')) {
+    //                 $(this).removeClass('cf-error');
+    //                 if(required > 0) {
+    //                     required -= 1;
+    //                 }
+    //             }
+    //         }
+    //     });
+    //     // if( required === 0 ) {
+    //     //     $.ajax({
+    //     //         type: 'POST',
+    //     //         url: 'Assets/php/SendMail.php',
+    //     //         data: {
+    //     //             cf_name: name,
+    //     //             cf_email: email,
+    //     //             cf_message: message
+    //     //         },
+    //     //         dataType: "json",
+    //     //         success: function(data) {
+    //     //             console.log(data);
+    //     //             showAlertBox(data.status, data.message);
 
-                    if(data.status === 200) {
-                        $("#contact-form .input__field").val("");
-                    }
-                },
-                error: function(data) {
-                    showAlertBox(data.status, data.message);
-                }
-            });
-        }
-    });
+    //     //             if(data.status === 200) {
+    //     //                 $("#contact-form .input__field").val("");
+    //     //             }
+    //     //         },
+    //     //         error: function(data) {
+    //     //             showAlertBox(data.status, data.message);
+    //     //         }
+    //     //     });
+    //     // }
+    // });
 }
 
 
