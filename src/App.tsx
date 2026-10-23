@@ -122,6 +122,7 @@ const experience = [
 ]
 
 const projects = [
+  { name: 'Pinnacle Tech', type: 'Technology, AI Automation & Creative Studio', image: 'pinnacle-tech.jpg', url: 'https://pinnacle-tech-401.netlify.app/' },
   { name: 'Ladega Studio', type: 'Digital Agency', image: 'ladega-studio.jpg', url: 'https://ladegastudio.com/' },
   { name: 'Taharacision', type: 'Healthcare', image: 'taharacision.jpg', url: 'https://www.taharacision.co.uk/' },
   { name: 'Malleable Communication', type: 'Marketing & Communications', image: 'malleable-group.jpg', url: 'https://malleablegroup.com/' },
