@@ -11,9 +11,11 @@ $(window).on('load', function() {
             $filters = $('.portfolio-filter ul li');
         $elements.isotope();
 
-        $filters.on('click', function(){
-            $filters.removeClass('active');
-            $(this).addClass('active');
+        $filters.attr('aria-pressed', function() {
+            return $(this).hasClass('active') ? 'true' : 'false';
+        }).on('click', function(){
+            $filters.removeClass('active').attr('aria-pressed', 'false');
+            $(this).addClass('active').attr('aria-pressed', 'true');
             var selector = $(this).data('filter');
             $(".portfolio-items").isotope({
                 filter: selector,
@@ -23,15 +25,17 @@ $(window).on('load', function() {
                 },
                 visibleStyle: {
                     transform: 'scale(1) skew(0deg)',
-                    opacity: 1,
+                    opacity: 1
                 },
                 transitionDuration: '.5s'
             });
+        }).on('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                $(this).trigger('click');
+            }
         });
     }
-
-    /*======== Blogs Masonry Setup ========*/
-    $('.blogs-masonry').isotope({ layoutMode: 'moduloColumns' });
 
 });
 
@@ -53,6 +57,7 @@ $(document).ready(function() {
 
         if (!headerContainer.is(e.target) && headerContainer.has(e.target).length === 0 && $(e.target).closest('.header-toggle').length === 0) {
             $('.header-content').removeClass('on');
+            $('.header-toggle').attr('aria-expanded', 'false');
         }
 
     });
@@ -68,14 +73,14 @@ $(document).ready(function() {
     $('.nav-menu a').on('click',function() {
         if($('.header-content.on').length) {
             $('.header-content').removeClass('on');
+            $('.header-toggle').attr('aria-expanded', 'false');
         }
     });
 
     /*======== Mobile Toggle Click Setup ========*/
     $('.header-toggle').on('click', function() {
-
         $('.header-content').toggleClass('on');
-
+        $(this).attr('aria-expanded', $('.header-content').hasClass('on') ? 'true' : 'false');
     });
 
     /*========Clients OwlCarousel Setup========*/
@@ -276,86 +281,55 @@ function initMap() {
 
 /********** Function Contact Form Setup **********/
 function contactFormSetup() {
+    var $form = $('#contact-form');
+    if (!$form.length) {
+        return;
+    }
 
-    /*======== Check Field Have Value When Page Load ========*/
+    function updateFieldState(field) {
+        var $field = $(field);
+        $field.parent('.input').toggleClass('input--filled', $.trim($field.val()).length > 0);
+        if (field.checkValidity()) {
+            $field.removeClass('cf-error');
+        }
+    }
+
     $('.input__field').each(function() {
-        if($(this).val()) {
-            $(this).parent('.input').addClass('input--filled');
-        } else {
-            $(this).parent('.input').removeClass('input--filled');
-        }
+        updateFieldState(this);
+    }).on('input change', function() {
+        updateFieldState(this);
+    }).on('invalid', function() {
+        $(this).addClass('cf-error');
     });
 
-    /*======== Check Field Have Value When Keyup ========*/
-    $('.input__field').on('keyup', function() {
-        if($(this).val()) {
-            $(this).parent('.input').addClass('input--filled');
-        } else {
-            $(this).parent('.input').removeClass('input--filled');
+    $form.on('submit', function(e) {
+        e.preventDefault();
+
+        if (!this.checkValidity()) {
+            this.reportValidity();
+            return;
         }
+
+        var name = $.trim($('#cf-name').val()),
+            email = $.trim($('#cf-email').val()),
+            message = $.trim($('#cf-message').val()),
+            subject = 'Portfolio enquiry from ' + name,
+            body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message,
+            mailto = 'mailto:muhkhseet@gmail.com?subject=' + encodeURIComponent(subject) +
+                '&body=' + encodeURIComponent(body);
+
+        showAlertBox(200, 'Your email app is opening. Review and send the message to complete your enquiry.');
+        window.location.href = mailto;
     });
-
-
-    // $('#contact-form').on('submit', function(e) {
-    //     e.preventDefault();
-    //     var name = $('#cf-name').val(),
-    //         email = $('#cf-email').val(),
-    //         message = $('#cf-message').val(),
-    //         $messageBox = $('#contact-form .message'),
-    //         required = 0;
-
-
-    //     $('.cf-validate', this).each(function() {
-    //         if($(this).val() == '') {
-    //             $(this).addClass('cf-error');
-    //             required += 1;
-    //         } else {
-    //             if($(this).hasClass('cf-error')) {
-    //                 $(this).removeClass('cf-error');
-    //                 if(required > 0) {
-    //                     required -= 1;
-    //                 }
-    //             }
-    //         }
-    //     });
-    //     // if( required === 0 ) {
-    //     //     $.ajax({
-    //     //         type: 'POST',
-    //     //         url: '',
-    //     //         data: {
-    //     //             cf_name: name,
-    //     //             cf_email: email,
-    //     //             cf_message: message
-    //     //         },
-    //     //         dataType: "json",
-    //     //         success: function(data) {
-    //     //             console.log(data);
-    //     //             showAlertBox(data.status, data.message);
-
-    //     //             if(data.status === 200) {
-    //     //                 $("#contact-form .input__field").val("");
-    //     //             }
-    //     //         },
-    //     //         error: function(data) {
-    //     //             showAlertBox(data.status, data.message);
-    //     //         }
-    //     //     });
-    //     // }
-    // });
 }
 
 
 /********** Function Show Alert Box **********/
 function showAlertBox(response, message) {
-    var $alertBox = $('<div class="alert"></div>'),
+    var $alertBox = $('<div class="alert"></div>').text(message),
         $alContainer = $('#contact-form .alert-container');
-    if( response == 200 ) {
-        $alertBox.addClass('alert-success').html(message);
-        $alContainer.html($alertBox);
-    } else {
-        $alertBox.addClass('alert-danger').html(message);
-        $alContainer.html($alertBox);
-    }
-    $alContainer.fadeIn(300).delay(4000).fadeOut(400);
+
+    $alertBox.addClass(response === 200 ? 'alert-success' : 'alert-danger');
+    $alContainer.stop(true).html($alertBox).fadeIn(300).delay(6000).fadeOut(400);
 }
 

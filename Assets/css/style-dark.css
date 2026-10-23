@@ -803,13 +803,25 @@ header .header-mobile .header-toggle {
     line-height: 50px;
     cursor: pointer;
     width: 50px;
+    height: 50px;
+    padding: 0;
     text-align: center;
+    background: transparent;
+    border: 0;
     border-left: 1px solid #3b3c43;
     float: right;
 }
 
 header .header-mobile .header-toggle i {
     color: #fff;
+}
+
+.header-toggle:focus-visible,
+.portfolio-filter li:focus-visible,
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
 }
 
 .header-main .nav-footer {
