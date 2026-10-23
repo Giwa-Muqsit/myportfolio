@@ -133,6 +133,7 @@ const projects = [
   { name: 'Noblesse Tribe', type: 'Community Platform', image: 'noblesse-tribe.jpg', url: 'https://noblessetribe.com/' },
   { name: 'Softlanding Designs', type: 'Architecture & Construction', image: 'softlanding-designs.jpg', url: 'https://softlandingdesigns.com/' },
   { name: 'CampaignOS', type: 'Campaign Management Platform', image: 'campaignos.jpg', url: 'https://campaignos-v2.netlify.app/' },
+  { name: 'Atlas Energy', type: 'Energy & Fintech', image: 'atlas-energy.jpg', url: 'https://atlas-energy.netlify.app/' },
 ]
 
 const skillGroups = [

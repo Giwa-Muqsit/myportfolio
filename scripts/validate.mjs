@@ -27,7 +27,7 @@ try {
     if (!bodyText.includes(text)) throw new Error(`Missing required content: ${text}`)
   }
   const projectCount = await page.locator('.website-link').count()
-  if (projectCount !== 11) throw new Error(`Expected 11 project links, found ${projectCount}`)
+  if (projectCount !== 12) throw new Error(`Expected 12 project links, found ${projectCount}`)
   const brokenImages = await page.locator('img').evaluateAll(images => images.filter(image => !image.complete || image.naturalWidth === 0).map(image => image.getAttribute('src')))
   if (brokenImages.length) throw new Error(`Broken images: ${brokenImages.join(', ')}`)
   const desktopOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth)
