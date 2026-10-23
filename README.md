@@ -2,6 +2,8 @@
 
 Professional portfolio for Giwa Muqsit Olufowobi, Founder of Pinnacle Tech Services. Built with React, TypeScript, Vite, and Tailwind CSS.
 
+Live site: https://giwa-muqsit.netlify.app/
+
 ## Local development
 
 ```bash
